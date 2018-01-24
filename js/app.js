@@ -9,8 +9,8 @@ var index2 = 0;
 var index3 = 0;
 
 
-//array to hold the three currently-displayed products
-//var displayedProducts = [];
+//array to hold the indices of the three most-recently-displayed products
+var displayedIndices = [];
 
 //make constructor for Product objects
 function Product(filepath, name) {
@@ -67,21 +67,47 @@ function countClick3() {
 
 function randomProducts() {
 
-  //choose a random index
+  //choose  random indices
+
   index1 = randomIndex();
   index2 = randomIndex();
   index3 = randomIndex();
 
-  //display that image
+  // recalculate index1 if it matches index2 or index3
+  while( index1 === index2 || index1 === index3) {
+  //  console.log(index1 + '' + index2 + '' + index3);
+    index1 = randomIndex();
+  }
+
+  //recalculate index2 if it matches index1 or index3
+  while( index2 === index1 || index2 === index3) {
+  //  console.log(index1 + '' + index2 + '' + index3);
+    index2 = randomIndex();
+  }
+
+  //display those images
   imgEl1.src = Product.allProducts[index1].filepath;
   imgEl2.src = Product.allProducts[index2].filepath;
   imgEl3.src = Product.allProducts[index3].filepath;
 
-  //increment displayCount for that index
+  //increment displayCount for those indices
   Product.allProducts[index1].displayCount++;
   Product.allProducts[index2].displayCount++;
   Product.allProducts[index3].displayCount++;
 
+  //add those indices to the array of most recently displayed indices
+  displayedIndices = [];
+  displayedIndices.push(index1);
+  displayedIndices.push(index2);
+  displayedIndices.push(index3);
+
+  for (var j in displayedIndices) {
+    console.log(j + ': ' + Product.allProducts[displayedIndices[j]].name);
+  }
+
 }
 
+index1 = randomIndex();
+index2 = randomIndex();
+index3 = randomIndex();
 randomProducts();
