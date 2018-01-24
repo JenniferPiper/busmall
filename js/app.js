@@ -8,7 +8,7 @@ var index2 = 0;
 var index3 = 0;
 
 //Number of total clicks before showing results.
-var MAX_CLICKS = 5;
+var MAX_CLICKS = 25;
 
 var ulEl = document.getElementById('results');
 
@@ -106,43 +106,54 @@ function countClick3() {
     randomProducts();
   }
 }
+
+
 function showResults() {
   var barColors = [];
   var clicksPerProduct = [];
   var chartLabels = [];
   for( var i in Product.allProducts) {
-    //fill array barColors with chosen color for chart bars
-    barColors[i] = 'lightblue';
+
+    //fill array  with chosen color for chart bars
+    barColors[i] = 'lightgreen';
+
+    //fill array with product names
     chartLabels[i] = Product.allProducts[i].name;
+
+    //fill array with click count for each product
     clicksPerProduct[i] = Product.allProducts[i].clickCount;
 
-    // var liEl = document.createElement('li');
-    // liEl.textContent = Product.allProducts[i].name + ': Displayed ' + Product.allProducts[i].displayCount + ' times and chosen ' + Product.allProducts[i].clickCount + ' times.';
-    // ulEl.appendChild(liEl);
-
-    var context = document.getElementById('results-chart').getContext('2d');
-    var resultsChart = new Chart(context, { //eslint-disable-line
-      type: 'bar',
-      data: {
-        labels: chartLabels,
-        datasets: [{
-          label: 'Number of Clicks',
-          data: clicksPerProduct,
-          backgroundColor: barColors,
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
-    });
+    var liEl = document.createElement('li');
+    liEl.textContent = Product.allProducts[i].name + ': Displayed ' + Product.allProducts[i].displayCount + ' times and chosen ' + Product.allProducts[i].clickCount + ' times.';
+    ulEl.appendChild(liEl);
   }
+
+  var context = document.getElementById('results-chart').getContext('2d');
+  var resultsChart = new Chart(context, { //eslint-disable-line
+    type: 'bar',
+    data: {
+      labels: chartLabels,
+      datasets: [{
+        label: 'Number of Clicks',
+        data: clicksPerProduct,
+        backgroundColor: barColors
+      }]
+    },
+    options: {
+      scales: {
+        xAxes: [{
+          ticks: {
+            autoSkip: false
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
 }
 
 function randomProducts() {
