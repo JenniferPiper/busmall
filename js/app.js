@@ -24,15 +24,26 @@ function Product(filepath, name) {
 
 //create instances of Products
 
-// new Product('img/bag.jpg' ,'R2D2 Luggage');
+new Product('img/bag.jpg' ,'R2D2 Luggage');
 new Product('img/banana.jpg' ,'Banana Slicer');
-// new Product('img/bathroom.jpg' ,'Bathroom Tablet Holder');
-// new Product('img/boots.jpg' ,'Toeless Boots');
+new Product('img/bathroom.jpg' ,'Bathroom Tablet Holder');
+new Product('img/boots.jpg' ,'Toeless Boots');
 new Product('img/breakfast.jpg' ,'Breakfast Appliance');
-// new Product('img/bubblegum.jpg' ,'Meatball Bubble Gum');
+new Product('img/bubblegum.jpg' ,'Meatball Bubble Gum');
 new Product('img/chair.jpg' ,'Convex Chair');
-// new Product('img/cthulhu.jpg' ,'Cthulhu Action Figure');
+new Product('img/cthulhu.jpg' ,'Cthulhu Action Figure');
 new Product('img/dog-duck.jpg' ,'Dog Duck Bill');
+//new Product('img/dragon.jpg' ,'Dragon Meat');
+// new Product('img/pen.jpg' ,'Pen Utensils');
+// new Product('img/pet-sweep.jpg' ,'Pet Sweeper Shoes');
+// new Product('img/scissors.jpg' ,'Pizza Scissors');
+// new Product('img/shark.jpg' ,'Shark Sleeping Bag');
+// new Product('img/sweep.png' ,'Sweeper for Baby');
+// new Product('img/tauntaun.jpg' ,'Tauntaun Sleeping Bag');
+// new Product('img/unicorn.jpg' ,'Unicorn Meat');
+// new Product('img/usb.gif' ,'USB Tentacle');
+// new Product('img/water-can.jpg' ,'Unique Watering Can');
+// new Product('img/wine-glass.jpg' ,'Decorative Wine Glass');
 
 
 //access the image from the DOM
@@ -73,16 +84,22 @@ function randomProducts() {
   index2 = randomIndex();
   index3 = randomIndex();
 
-  // recalculate index1 if it matches index2 or index3
-  while( index1 === index2 || index1 === index3) {
-  //  console.log(index1 + '' + index2 + '' + index3);
+  // recalculate index1 if it matches index2 or index3, or if it is found in the displayedIndices array
+  while( index1 === index2 || index1 === index3 || displayedIndices.includes(index1)) {
+    console.log(index1 + '' + index2 + '' + index3);
     index1 = randomIndex();
   }
 
-  //recalculate index2 if it matches index1 or index3
-  while( index2 === index1 || index2 === index3) {
-  //  console.log(index1 + '' + index2 + '' + index3);
+  //recalculate index2 if it matches index1 or index3, or if it is found in the displayedIndices array
+  while( index2 === index1 || index2 === index3 || displayedIndices.includes(index2)) {
+    console.log(index1 + '' + index2 + '' + index3);
     index2 = randomIndex();
+  }
+
+  //recalculate index3 if it matches index1 or index2, or if it is found in the displayedIndices array
+  while( index3 === index1 || index3 === index2 || displayedIndices.includes(index2)) {
+    console.log(index1 + '' + index2 + '' + index3);
+    index3 = randomIndex();
   }
 
   //display those images
@@ -95,14 +112,14 @@ function randomProducts() {
   Product.allProducts[index2].displayCount++;
   Product.allProducts[index3].displayCount++;
 
-  //add those indices to the array of most recently displayed indices
+  //rewrite the array of indices of recently-displayed products
   displayedIndices = [];
   displayedIndices.push(index1);
   displayedIndices.push(index2);
   displayedIndices.push(index3);
 
   for (var j in displayedIndices) {
-    console.log(j + ': ' + Product.allProducts[displayedIndices[j]].name);
+    console.log(displayedIndices[j] + ': ' + Product.allProducts[displayedIndices[j]].name + ' displayed: ' + Product.allProducts[displayedIndices[j]].displayCount + ' clicked: ' + Product.allProducts[displayedIndices[j]].clickCount);
   }
 
 }
