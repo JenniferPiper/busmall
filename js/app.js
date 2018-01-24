@@ -134,7 +134,7 @@ function randomProducts() {
   }
 
   //recalculate index3 if it matches index1 or index2, or if it is found in the displayedIndices array
-  while( index3 === index1 || index3 === index2 || displayedIndices.includes(index2)) {
+  while( index3 === index1 || index3 === index2 || displayedIndices.includes(index3)) {
     //console.log(index1 + '' + index2 + '' + index3);
     index3 = randomIndex();
   }
