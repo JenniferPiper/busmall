@@ -8,7 +8,7 @@ var index2 = 0;
 var index3 = 0;
 
 //Number of total clicks before showing results.
-var maxClicks = 25;
+var MAX_CLICKS = 25;
 
 var ulEl = document.getElementById('results');
 
@@ -66,7 +66,7 @@ function countClick1() {
   Product.allProducts[index1].clickCount++;
   Product.totalClicks++;
   console.log(Product.totalClicks);
-  if(Product.totalClicks > maxClicks - 1 ){
+  if(Product.totalClicks >= MAX_CLICKS ){
     imgEl1.removeEventListener('click', countClick1);
     imgEl2.removeEventListener('click', countClick2);
     imgEl3.removeEventListener('click', countClick3);
@@ -81,7 +81,7 @@ function countClick2() {
   Product.allProducts[index2].clickCount++;
   Product.totalClicks++;
   console.log(Product.totalClicks);
-  if(Product.totalClicks > maxClicks - 1){
+  if(Product.totalClicks >= MAX_CLICKS ){
     imgEl1.removeEventListener('click', countClick1);
     imgEl2.removeEventListener('click', countClick2);
     imgEl3.removeEventListener('click', countClick3);
@@ -96,7 +96,7 @@ function countClick3() {
   Product.allProducts[index3].clickCount++;
   Product.totalClicks++;
   console.log(Product.totalClicks);
-  if(Product.totalClicks > maxClicks - 1 ){
+  if(Product.totalClicks >= MAX_CLICKS ){
     imgEl1.removeEventListener('click', countClick1);
     imgEl2.removeEventListener('click', countClick2);
     imgEl3.removeEventListener('click', countClick3);
@@ -134,7 +134,7 @@ function randomProducts() {
   }
 
   //recalculate index3 if it matches index1 or index2, or if it is found in the displayedIndices array
-  while( index3 === index1 || index3 === index2 || displayedIndices.includes(index2)) {
+  while( index3 === index1 || index3 === index2 || displayedIndices.includes(index3)) {
     //console.log(index1 + '' + index2 + '' + index3);
     index3 = randomIndex();
   }
