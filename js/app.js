@@ -64,36 +64,20 @@ function randomIndex() {
 
 function countClick1() {
   Product.allProducts[index1].clickCount++;
-  Product.totalClicks++;
-  console.log(Product.totalClicks);
-  if(Product.totalClicks >= MAX_CLICKS ){
-    imgEl1.removeEventListener('click', countClick1);
-    imgEl2.removeEventListener('click', countClick2);
-    imgEl3.removeEventListener('click', countClick3);
-    showResults();
-  }
-  else{
-    randomProducts();
-  }
+  afterClick();
 }
 
 function countClick2() {
   Product.allProducts[index2].clickCount++;
-  Product.totalClicks++;
-  console.log(Product.totalClicks);
-  if(Product.totalClicks >= MAX_CLICKS ){
-    imgEl1.removeEventListener('click', countClick1);
-    imgEl2.removeEventListener('click', countClick2);
-    imgEl3.removeEventListener('click', countClick3);
-    showResults();
-  }
-  else{
-    randomProducts();
-  }
+  afterClick();
 }
 
 function countClick3() {
   Product.allProducts[index3].clickCount++;
+  afterClick();
+}
+
+function afterClick(){
   Product.totalClicks++;
   console.log(Product.totalClicks);
   if(Product.totalClicks >= MAX_CLICKS ){
@@ -106,8 +90,6 @@ function countClick3() {
     randomProducts();
   }
 }
-
-
 
 function showResults() {
   var barColors = [];
