@@ -1,16 +1,16 @@
 'use strict';
 
 Product.allProducts = [];
-Product.totalClicks = 0;
+//Product.totalClicks = 0;
 
-//var sessionClicks = 0;
+var sessionClicks = 0;
 
 var index1 = 0;
 var index2 = 0;
 var index3 = 0;
 
 //Number of total clicks before showing results.
-var MAX_CLICKS = 5;
+var MAX_CLICKS = 25;
 
 //var ulEl = document.getElementById('results');
 
@@ -26,28 +26,31 @@ function Product(filepath, name) {
   Product.allProducts.push(this);
 }
 
-//create instances of Products
-new Product('img/bag.jpg' ,'R2D2 Luggage');
-new Product('img/banana.jpg' ,'Banana Slicer');
-new Product('img/bathroom.jpg' ,'Bathroom Tablet Holder');
-new Product('img/boots.jpg' ,'Toeless Boots');
-new Product('img/breakfast.jpg' ,'Breakfast Appliance');
-new Product('img/bubblegum.jpg' ,'Meatball Bubble Gum');
-new Product('img/chair.jpg' ,'Convex Chair');
-new Product('img/cthulhu.jpg' ,'Cthulhu Action Figure');
-new Product('img/dog-duck.jpg' ,'Dog Duck Bill');
-new Product('img/dragon.jpg' ,'Dragon Meat');
-new Product('img/pen.jpg' ,'Pen Utensils');
-new Product('img/pet-sweep.jpg' ,'Pet Sweeper Shoes');
-new Product('img/scissors.jpg' ,'Pizza Scissors');
-new Product('img/shark.jpg' ,'Shark Sleeping Bag');
-new Product('img/sweep.png' ,'Sweeper for Baby');
-new Product('img/tauntaun.jpg' ,'Tauntaun Sleeping Bag');
-new Product('img/unicorn.jpg' ,'Unicorn Meat');
-new Product('img/usb.gif' ,'USB Tentacle');
-new Product('img/water-can.jpg' ,'Unique Watering Can');
-new Product('img/wine-glass.jpg' ,'Decorative Wine Glass');
 
+//create instances of Products
+function createProducts(){
+  Product.totalClicks = 0;
+  new Product('img/bag.jpg' ,'R2D2 Luggage');
+  new Product('img/banana.jpg' ,'Banana Slicer');
+  new Product('img/bathroom.jpg' ,'Bathroom Tablet Holder');
+  new Product('img/boots.jpg' ,'Toeless Boots');
+  new Product('img/breakfast.jpg' ,'Breakfast Appliance');
+  new Product('img/bubblegum.jpg' ,'Meatball Bubble Gum');
+  new Product('img/chair.jpg' ,'Convex Chair');
+  new Product('img/cthulhu.jpg' ,'Cthulhu Action Figure');
+  new Product('img/dog-duck.jpg' ,'Dog Duck Bill');
+  new Product('img/dragon.jpg' ,'Dragon Meat');
+  new Product('img/pen.jpg' ,'Pen Utensils');
+  new Product('img/pet-sweep.jpg' ,'Pet Sweeper Shoes');
+  new Product('img/scissors.jpg' ,'Pizza Scissors');
+  new Product('img/shark.jpg' ,'Shark Sleeping Bag');
+  new Product('img/sweep.png' ,'Sweeper for Baby');
+  new Product('img/tauntaun.jpg' ,'Tauntaun Sleeping Bag');
+  new Product('img/unicorn.jpg' ,'Unicorn Meat');
+  new Product('img/usb.gif' ,'USB Tentacle');
+  new Product('img/water-can.jpg' ,'Unique Watering Can');
+  new Product('img/wine-glass.jpg' ,'Decorative Wine Glass');
+}
 
 //access the images from the DOM
 var imgEl1 = document.getElementById('img1');
@@ -81,8 +84,10 @@ function countClick3() {
 
 function afterClick(){
   Product.totalClicks++;
-  console.log(Product.totalClicks);
-  if(Product.totalClicks >= MAX_CLICKS ){
+  sessionClicks++;
+  console.log('total clicks: ' + Product.totalClicks);
+  console.log('session clicks: ' + sessionClicks);
+  if( sessionClicks >= MAX_CLICKS ){
     imgEl1.removeEventListener('click', countClick1);
     imgEl2.removeEventListener('click', countClick2);
     imgEl3.removeEventListener('click', countClick3);
@@ -96,10 +101,11 @@ function afterClick(){
 function storeProducts(){
   var products = JSON.stringify(Product.allProducts);
   localStorage.setItem( 'products', products);
+  localStorage.setItem('totalClicks', Product.totalClicks);
 }
 function retrieveProducts() {
-  var products = localStorage.getItem( 'products' );
-  Product.allProducts = JSON.parse( products );
+  Product.allProducts = JSON.parse( localStorage.getItem( 'products' ) );
+  Product.totalClicks = JSON.parse( localStorage.getItem('totalClicks') );
 }
 
 function showResults() {
@@ -202,9 +208,11 @@ function randomProducts() {
   // }
 
 }
-if(localStorage){
-  //console.log('Local Storage = true');
+if(localStorage.products){
   retrieveProducts();
+}
+else {
+  createProducts();
 }
 index1 = randomIndex();
 index2 = randomIndex();
