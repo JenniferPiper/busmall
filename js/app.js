@@ -1,7 +1,9 @@
 'use strict';
 
 Product.allProducts = [];
-Product.totalClicks = 0;
+//Product.totalClicks = 0;
+
+var sessionClicks = 0;
 
 var index1 = 0;
 var index2 = 0;
@@ -10,7 +12,7 @@ var index3 = 0;
 //Number of total clicks before showing results.
 var MAX_CLICKS = 25;
 
-var ulEl = document.getElementById('results');
+//var ulEl = document.getElementById('results');
 
 //array to hold the indices of the three most-recently-displayed products
 var displayedIndices = [];
@@ -24,28 +26,31 @@ function Product(filepath, name) {
   Product.allProducts.push(this);
 }
 
-//create instances of Products
-new Product('img/bag.jpg' ,'R2D2 Luggage');
-new Product('img/banana.jpg' ,'Banana Slicer');
-new Product('img/bathroom.jpg' ,'Bathroom Tablet Holder');
-new Product('img/boots.jpg' ,'Toeless Boots');
-new Product('img/breakfast.jpg' ,'Breakfast Appliance');
-new Product('img/bubblegum.jpg' ,'Meatball Bubble Gum');
-new Product('img/chair.jpg' ,'Convex Chair');
-new Product('img/cthulhu.jpg' ,'Cthulhu Action Figure');
-new Product('img/dog-duck.jpg' ,'Dog Duck Bill');
-new Product('img/dragon.jpg' ,'Dragon Meat');
-new Product('img/pen.jpg' ,'Pen Utensils');
-new Product('img/pet-sweep.jpg' ,'Pet Sweeper Shoes');
-new Product('img/scissors.jpg' ,'Pizza Scissors');
-new Product('img/shark.jpg' ,'Shark Sleeping Bag');
-new Product('img/sweep.png' ,'Sweeper for Baby');
-new Product('img/tauntaun.jpg' ,'Tauntaun Sleeping Bag');
-new Product('img/unicorn.jpg' ,'Unicorn Meat');
-new Product('img/usb.gif' ,'USB Tentacle');
-new Product('img/water-can.jpg' ,'Unique Watering Can');
-new Product('img/wine-glass.jpg' ,'Decorative Wine Glass');
 
+//create instances of Products
+function createProducts(){
+  Product.totalClicks = 0;
+  new Product('img/bag.jpg' ,'R2D2 Luggage');
+  new Product('img/banana.jpg' ,'Banana Slicer');
+  new Product('img/bathroom.jpg' ,'Bathroom Tablet Holder');
+  new Product('img/boots.jpg' ,'Toeless Boots');
+  new Product('img/breakfast.jpg' ,'Breakfast Appliance');
+  new Product('img/bubblegum.jpg' ,'Meatball Bubble Gum');
+  new Product('img/chair.jpg' ,'Convex Chair');
+  new Product('img/cthulhu.jpg' ,'Cthulhu Action Figure');
+  new Product('img/dog-duck.jpg' ,'Dog Duck Bill');
+  new Product('img/dragon.jpg' ,'Dragon Meat');
+  new Product('img/pen.jpg' ,'Pen Utensils');
+  new Product('img/pet-sweep.jpg' ,'Pet Sweeper Shoes');
+  new Product('img/scissors.jpg' ,'Pizza Scissors');
+  new Product('img/shark.jpg' ,'Shark Sleeping Bag');
+  new Product('img/sweep.png' ,'Sweeper for Baby');
+  new Product('img/tauntaun.jpg' ,'Tauntaun Sleeping Bag');
+  new Product('img/unicorn.jpg' ,'Unicorn Meat');
+  new Product('img/usb.gif' ,'USB Tentacle');
+  new Product('img/water-can.jpg' ,'Unique Watering Can');
+  new Product('img/wine-glass.jpg' ,'Decorative Wine Glass');
+}
 
 //access the images from the DOM
 var imgEl1 = document.getElementById('img1');
@@ -64,39 +69,25 @@ function randomIndex() {
 
 function countClick1() {
   Product.allProducts[index1].clickCount++;
-  Product.totalClicks++;
-  console.log(Product.totalClicks);
-  if(Product.totalClicks >= MAX_CLICKS ){
-    imgEl1.removeEventListener('click', countClick1);
-    imgEl2.removeEventListener('click', countClick2);
-    imgEl3.removeEventListener('click', countClick3);
-    showResults();
-  }
-  else{
-    randomProducts();
-  }
+  afterClick();
 }
 
 function countClick2() {
   Product.allProducts[index2].clickCount++;
-  Product.totalClicks++;
-  console.log(Product.totalClicks);
-  if(Product.totalClicks >= MAX_CLICKS ){
-    imgEl1.removeEventListener('click', countClick1);
-    imgEl2.removeEventListener('click', countClick2);
-    imgEl3.removeEventListener('click', countClick3);
-    showResults();
-  }
-  else{
-    randomProducts();
-  }
+  afterClick();
 }
 
 function countClick3() {
   Product.allProducts[index3].clickCount++;
+  afterClick();
+}
+
+function afterClick(){
   Product.totalClicks++;
-  console.log(Product.totalClicks);
-  if(Product.totalClicks >= MAX_CLICKS ){
+  sessionClicks++;
+  console.log('total clicks: ' + Product.totalClicks);
+  console.log('session clicks: ' + sessionClicks);
+  if( sessionClicks >= MAX_CLICKS ){
     imgEl1.removeEventListener('click', countClick1);
     imgEl2.removeEventListener('click', countClick2);
     imgEl3.removeEventListener('click', countClick3);
@@ -107,8 +98,18 @@ function countClick3() {
   }
 }
 
+function storeProducts(){
+  var products = JSON.stringify(Product.allProducts);
+  localStorage.setItem( 'products', products);
+  localStorage.setItem('totalClicks', Product.totalClicks);
+}
+function retrieveProducts() {
+  Product.allProducts = JSON.parse( localStorage.getItem( 'products' ) );
+  Product.totalClicks = JSON.parse( localStorage.getItem('totalClicks') );
+}
 
 function showResults() {
+  storeProducts();
   var barColors = [];
   var clicksPerProduct = [];
   var chartLabels = [];
@@ -123,10 +124,15 @@ function showResults() {
     //fill array with click count for each product
     clicksPerProduct[i] = Product.allProducts[i].clickCount;
 
-    var liEl = document.createElement('li');
-    liEl.textContent = Product.allProducts[i].name + ': Displayed ' + Product.allProducts[i].displayCount + ' times and chosen ' + Product.allProducts[i].clickCount + ' times.';
-    ulEl.appendChild(liEl);
+    // var liEl = document.createElement('li');
+    // liEl.textContent = Product.allProducts[i].name + ': Displayed ' + Product.allProducts[i].displayCount + ' times and chosen ' + Product.allProducts[i].clickCount + ' times.';
+    // ulEl.appendChild(liEl);
   }
+  var sectionEl = document.getElementById('results-section');
+  var pEl = document.createElement('p');
+  pEl.textContent = 'Total Clicks: ' + Product.totalClicks;
+  sectionEl.appendChild(pEl);
+
 
   var context = document.getElementById('results-chart').getContext('2d');
   var resultsChart = new Chart(context, { //eslint-disable-line
@@ -196,12 +202,18 @@ function randomProducts() {
   displayedIndices.push(index2);
   displayedIndices.push(index3);
 
+  // debugging messages
   // for (var j in displayedIndices) {
   //   console.log(displayedIndices[j] + ': ' + Product.allProducts[displayedIndices[j]].name + ' displayed: ' + Product.allProducts[displayedIndices[j]].displayCount + ' clicked: ' + Product.allProducts[displayedIndices[j]].clickCount);
   // }
 
 }
-
+if(localStorage.products){
+  retrieveProducts();
+}
+else {
+  createProducts();
+}
 index1 = randomIndex();
 index2 = randomIndex();
 index3 = randomIndex();

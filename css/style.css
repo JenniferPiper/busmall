@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 body {
   background: #efefef;
   font-size: 16px;
@@ -19,7 +22,7 @@ h2 {
   font-size: 1.5rem;
 }
 img {
-  width: 250px;
+  max-width: 100%;
 }
 ul {
   margin-top: 20px;
@@ -27,4 +30,22 @@ ul {
 }
 ul li {
   margin-bottom: 5px;
+}
+#images {
+  margin-top: 20px;
+  background-color: lightgray;
+  padding: 20px;
+}
+.img-wrapper {
+  display: inline-block;
+  margin-right: 5px;
+  text-align: center;
+  width: calc(33% - 5px);
+}
+.img-wrapper:last-of-type {
+  margin-right: 0;
+}
+.img-wrapper img {
+  max-height: 250px;
+  vertical-align: middle;
 }
