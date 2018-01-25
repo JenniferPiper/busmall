@@ -8,9 +8,9 @@ var index2 = 0;
 var index3 = 0;
 
 //Number of total clicks before showing results.
-var MAX_CLICKS = 25;
+var MAX_CLICKS = 5;
 
-var ulEl = document.getElementById('results');
+//var ulEl = document.getElementById('results');
 
 //array to hold the indices of the three most-recently-displayed products
 var displayedIndices = [];
@@ -108,6 +108,7 @@ function countClick3() {
 }
 
 
+
 function showResults() {
   var barColors = [];
   var clicksPerProduct = [];
@@ -123,10 +124,15 @@ function showResults() {
     //fill array with click count for each product
     clicksPerProduct[i] = Product.allProducts[i].clickCount;
 
-    var liEl = document.createElement('li');
-    liEl.textContent = Product.allProducts[i].name + ': Displayed ' + Product.allProducts[i].displayCount + ' times and chosen ' + Product.allProducts[i].clickCount + ' times.';
-    ulEl.appendChild(liEl);
+    // var liEl = document.createElement('li');
+    // liEl.textContent = Product.allProducts[i].name + ': Displayed ' + Product.allProducts[i].displayCount + ' times and chosen ' + Product.allProducts[i].clickCount + ' times.';
+    // ulEl.appendChild(liEl);
   }
+  var sectionEl = document.getElementById('results-section');
+  var pEl = document.createElement('p');
+  pEl.textContent = 'Total Clicks: ' + Product.totalClicks;
+  sectionEl.appendChild(pEl);
+
 
   var context = document.getElementById('results-chart').getContext('2d');
   var resultsChart = new Chart(context, { //eslint-disable-line
@@ -196,6 +202,7 @@ function randomProducts() {
   displayedIndices.push(index2);
   displayedIndices.push(index3);
 
+  // debugging messages
   // for (var j in displayedIndices) {
   //   console.log(displayedIndices[j] + ': ' + Product.allProducts[displayedIndices[j]].name + ' displayed: ' + Product.allProducts[displayedIndices[j]].displayCount + ' clicked: ' + Product.allProducts[displayedIndices[j]].clickCount);
   // }
