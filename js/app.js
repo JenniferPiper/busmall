@@ -3,6 +3,8 @@
 Product.allProducts = [];
 Product.totalClicks = 0;
 
+//var sessionClicks = 0;
+
 var index1 = 0;
 var index2 = 0;
 var index3 = 0;
@@ -91,7 +93,17 @@ function afterClick(){
   }
 }
 
+function storeProducts(){
+  var products = JSON.stringify(Product.allProducts);
+  localStorage.setItem( 'products', products);
+}
+function retrieveProducts() {
+  var products = localStorage.getItem( 'products' );
+  Product.allProducts = JSON.parse( products );
+}
+
 function showResults() {
+  storeProducts();
   var barColors = [];
   var clicksPerProduct = [];
   var chartLabels = [];
@@ -190,7 +202,10 @@ function randomProducts() {
   // }
 
 }
-
+if(localStorage){
+  //console.log('Local Storage = true');
+  retrieveProducts();
+}
 index1 = randomIndex();
 index2 = randomIndex();
 index3 = randomIndex();
