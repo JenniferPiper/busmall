@@ -1,7 +1,6 @@
 'use strict';
 
 Product.allProducts = [];
-//Product.totalClicks = 0;
 
 var sessionClicks = 0;
 
@@ -23,6 +22,7 @@ function Product(filepath, name) {
   this.name = name;
   this.displayCount = 0;
   this.clickCount = 0;
+  this.percentClicked = 'N/A';
   Product.allProducts.push(this);
 }
 
@@ -110,13 +110,19 @@ function retrieveProducts() {
 
 function showResults() {
   storeProducts();
-  var barColors = [];
+  var barColors1 = [];
+  var barColors2 = [];
+  var barColors3 = [];
   var clicksPerProduct = [];
+  var viewsPerProduct = [];
+  var percentClicksPerProduct = [];
   var chartLabels = [];
   for( var i in Product.allProducts) {
 
-    //fill array  with chosen color for chart bars
-    barColors[i] = 'lightgreen';
+    //fill arrays with colors for chart bars
+    barColors1[i] = 'lightblue';
+    barColors2[i] = 'pink';
+    barColors3[i] = 'lightgreen';
 
     //fill array with product names
     chartLabels[i] = Product.allProducts[i].name;
@@ -124,28 +130,63 @@ function showResults() {
     //fill array with click count for each product
     clicksPerProduct[i] = Product.allProducts[i].clickCount;
 
+    //fill array with view count for each product
+    viewsPerProduct[i] = Product.allProducts[i].displayCount;
+
+    // if displayCount is greater than 0,
+    //calculate percentClicked for that product
+    if (Product.allProducts[i].displayCount > 0){
+      Product.allProducts[i].percentClicked = Math.round(Product.allProducts[i].clickCount / Product.allProducts[i].displayCount * 100);
+    }
+
+    //fill array with percent clicks for each product
+    percentClicksPerProduct[i] = Product.allProducts[i].percentClicked;
+
+
     // var liEl = document.createElement('li');
     // liEl.textContent = Product.allProducts[i].name + ': Displayed ' + Product.allProducts[i].displayCount + ' times and chosen ' + Product.allProducts[i].clickCount + ' times.';
     // ulEl.appendChild(liEl);
   }
-  var sectionEl = document.getElementById('results-section');
-  var pEl = document.createElement('p');
-  pEl.textContent = 'Total Clicks: ' + Product.totalClicks;
-  sectionEl.appendChild(pEl);
 
+  var clicksData = {
+
+    label: 'Number of Clicks',
+    data: clicksPerProduct,
+    backgroundColor: barColors1
+
+  };
+
+  var viewsData = {
+
+    label: 'Number of Views',
+    data: viewsPerProduct,
+    backgroundColor: barColors2
+
+  };
+
+  var percentsData = {
+
+    label: 'Percent Clicks per View',
+    data: percentClicksPerProduct,
+    backgroundColor: barColors3
+
+  };
+
+  var chartTitle = 'Product Popularity Out of ' + Product.totalClicks + ' Total Clicks';
 
   var context = document.getElementById('results-chart').getContext('2d');
+
   var resultsChart = new Chart(context, { //eslint-disable-line
     type: 'bar',
     data: {
       labels: chartLabels,
-      datasets: [{
-        label: 'Number of Clicks',
-        data: clicksPerProduct,
-        backgroundColor: barColors
-      }]
+      datasets: [clicksData, viewsData, percentsData]
     },
     options: {
+      title: {
+        display: true,
+        text: chartTitle
+      },
       scales: {
         xAxes: [{
           ticks: {
