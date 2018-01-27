@@ -10,9 +10,9 @@ var index2 = 0;
 var index3 = 0;
 
 //Number of total clicks before showing results.
-var MAX_CLICKS = 25;
+var MAX_CLICKS = 5;
 
-//var ulEl = document.getElementById('results');
+var ulEl = document.getElementById('results');
 
 //array to hold the indices of the three most-recently-displayed products
 var displayedIndices = [];
@@ -23,6 +23,7 @@ function Product(filepath, name) {
   this.name = name;
   this.displayCount = 0;
   this.clickCount = 0;
+  this.percentClicked = 'N/A';
   Product.allProducts.push(this);
 }
 
@@ -124,9 +125,17 @@ function showResults() {
     //fill array with click count for each product
     clicksPerProduct[i] = Product.allProducts[i].clickCount;
 
-    // var liEl = document.createElement('li');
-    // liEl.textContent = Product.allProducts[i].name + ': Displayed ' + Product.allProducts[i].displayCount + ' times and chosen ' + Product.allProducts[i].clickCount + ' times.';
-    // ulEl.appendChild(liEl);
+    // if displayCount is greater than 0
+    //calculate percentClicked for that product
+    // percentClicked = clickCount/displayCount*100;
+    if (Product.allProducts[i].displayCount > 0){
+      Product.allProducts[i].percentClicked = Math.round(Product.allProducts[i].clickCount / Product.allProducts[i].displayCount * 100);
+    }
+
+
+    var liEl = document.createElement('li');
+    liEl.textContent = Product.allProducts[i].name + ': Displayed ' + Product.allProducts[i].displayCount + ' times and chosen ' + Product.allProducts[i].clickCount + ' times.';
+    ulEl.appendChild(liEl);
   }
   var sectionEl = document.getElementById('results-section');
   var pEl = document.createElement('p');
