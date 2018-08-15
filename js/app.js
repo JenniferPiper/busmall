@@ -9,7 +9,7 @@ var index2 = 0;
 var index3 = 0;
 
 //Number of total clicks before showing results.
-var MAX_CLICKS = 25;
+var MAX_CLICKS = 5;
 
 //var ulEl = document.getElementById('results');
 
@@ -201,6 +201,7 @@ function showResults() {
       }
     }
   });
+  showButtons();
 }
 
 function randomProducts() {
@@ -249,6 +250,27 @@ function randomProducts() {
   // }
 
 }
+var refreshPageButton = document.getElementById('refresh-page');
+refreshPageButton.addEventListener('click', refreshPage);
+
+function refreshPage() {
+  window.location.reload();
+}
+
+var clearResultsButton = document.getElementById('clear-results');
+clearResultsButton.addEventListener('click', clearResults);
+
+function clearResults() {
+  localStorage.clear();
+  refreshPage();
+}
+
+function showButtons() {
+  refreshPageButton.classList.remove('hidden');
+  clearResultsButton.classList.remove('hidden');
+}
+
+
 if(localStorage.products){
   retrieveProducts();
 }

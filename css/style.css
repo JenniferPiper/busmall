@@ -50,3 +50,15 @@ ul li {
   max-height: 250px;
   vertical-align: middle;
 }
+button {
+    padding: 1em;
+    display: block;
+    margin: 20px auto;
+}
+
+.hidden {
+    display: none;
+}
+.visible {
+    display: block;
+}
