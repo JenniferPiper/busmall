@@ -201,6 +201,7 @@ function showResults() {
       }
     }
   });
+  showButtons();
 }
 
 function randomProducts() {
@@ -262,6 +263,11 @@ clearResultsButton.addEventListener('click', clearResults);
 function clearResults() {
   localStorage.clear();
   refreshPage();
+}
+
+function showButtons() {
+  refreshPageButton.classList.remove('hidden');
+  clearResultsButton.classList.remove('hidden');
 }
 
 
